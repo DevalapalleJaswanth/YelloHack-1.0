@@ -2,3 +2,12 @@
   font-family: sans-serif;
   text-align: center;
 }
+.row:hover {
+  background-color: rgb(165, 245, 218);
+}
+.header-row {
+  background-color: rgb(189, 189, 189);
+}
+th {
+  padding: 15px;
+}
