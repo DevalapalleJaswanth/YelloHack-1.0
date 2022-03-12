@@ -2,12 +2,31 @@
   font-family: sans-serif;
   text-align: center;
 }
-.row:hover {
+.display-flex {
+  display: flex;
+  gap: 10px;
+}
+.myrow {
+  transition: 0.7s;
+}
+.myrow:hover {
   background-color: rgb(165, 245, 218);
+  transform: scale(1.01);
 }
 .header-row {
   background-color: rgb(189, 189, 189);
 }
+.click {
+  background-color: aquamarine;
+}
+.unclick {
+  background-color: white;
+}
 th {
   padding: 15px;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

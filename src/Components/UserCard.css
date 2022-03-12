@@ -3,10 +3,11 @@ img {
   width: 50px;
   height: 50px;
 }
-.flex {
+.myflex {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 10px;
 }
 td {
   padding: 20px;

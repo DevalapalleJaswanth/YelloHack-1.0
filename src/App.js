@@ -1,10 +1,15 @@
 import "./styles.css";
+import "bootstrap/scss/bootstrap.scss";
+
 import React, { useState, useEffect } from "react";
 import { getDate, getUsers } from "./Services";
 import { UserCard } from "../src/Components";
+import { CSVLink } from "react-csv";
+
 export default function App() {
   const [users, setUsers] = useState([]);
   const [csvData, setCsvData] = useState([]);
+  const [search, setSearch] = useState([]);
   useEffect(() => {
     async function data() {
       let data = await getUsers(100);
@@ -17,7 +22,9 @@ export default function App() {
     }
     data();
   }, []);
-  //let csv = [];
+  function handleSearch(e) {
+    console.log(e.target.value);
+  }
   function handleSelect(item) {
     if (csvData.length === 0) {
       let temp = {
@@ -26,7 +33,7 @@ export default function App() {
         DOB: getDate(item),
         email: item.email
       };
-      // csv.push(temp);
+
       setCsvData([...csvData, temp]);
     } else {
       let copy = [...csvData];
@@ -39,7 +46,6 @@ export default function App() {
         }
       });
       if (count !== csvData.length) {
-        //console.log(copy);
         setCsvData(copy);
       } else {
         let temp = {
@@ -51,13 +57,53 @@ export default function App() {
         setCsvData([...csvData, temp]);
       }
     }
-    //console.log("csvData", csvData);
   }
-
+  let headers = [
+    { label: "Name", key: "name" },
+    { label: "Gender", key: "gender" },
+    { label: "DOB", key: "DOB" },
+    { label: "Email", key: "email" }
+  ];
   return (
-    <div className="App">
+    <div className="App ">
       {console.log(users, csvData)}
-      <div>
+      <div className="center">
+        <div className="display-flex ">
+          <div class="input-group mb-3 ">
+            <span class="input-group-text" id="basic-addon1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-search bi-primary"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="basic-addon1"
+              onChange={(e) => handleSearch(e)}
+            />
+          </div>
+          <div>
+            <CSVLink
+              data={csvData}
+              headers={headers}
+              filename={"my-file.csv"}
+              className="btn btn-primary text-nowrap"
+            >
+              Export as .csv
+            </CSVLink>
+          </div>
+        </div>
+      </div>
+      <div className="center">
         <table>
           <thead>
             <tr className="header-row">
@@ -71,7 +117,11 @@ export default function App() {
           <tbody>
             {users.length > 0 &&
               users.map((item, i) => (
-                <tr key={i} className="row" onClick={() => handleSelect(item)}>
+                <tr
+                  key={i}
+                  className="myrow"
+                  onClick={() => handleSelect(item)}
+                >
                   <UserCard user={item} />
                 </tr>
               ))}
