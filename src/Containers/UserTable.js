@@ -23,6 +23,30 @@ export default function UserTable({
     padding: "10px"
   });
   console.log(mode);
+  function handleStyle(item, i) {
+    console.log(mode, item.style);
+    if (mode === true) {
+      if (item.style === "dark-unclick") {
+        item.style = "dark-click";
+        item = { ...item, style: "dark-click" };
+      }
+      if (item.style === "dark-click") {
+        item.style = "dark-unclick";
+        item = { ...item, style: "dark-unclick" };
+      }
+    }
+    if (mode === false) {
+      if (item.style === "light-unclick") {
+        item.style = "light-click";
+        item = { ...item, style: "light-click" };
+      }
+      if (item.style === "light-click") {
+        item.style = "light-unclick";
+        item = { ...item, style: "light-unclick" };
+      }
+    }
+    console.log("handleStyle", item);
+  }
   return (
     <div className="table-responsive">
       <table className="table ">
@@ -96,9 +120,12 @@ export default function UserTable({
                 ascending.map((item, i) => (
                   <tr
                     key={i}
-                    className={` ${mode === true ? "dark-myrow" : "myrow"}`}
+                    className={` ${mode === true ? "dark-myrow" : "myrow"} ${
+                      item.style
+                    }`}
                     onClick={() => {
                       callbackSelect(item);
+                      handleStyle(item, i);
                       //setStyle(callbackClass(item));
                     }}
                   >
@@ -109,9 +136,12 @@ export default function UserTable({
                 descending.map((item, i) => (
                   <tr
                     key={i}
-                    className={` ${mode === true ? "dark-myrow" : "myrow"}`}
+                    className={` ${mode === true ? "dark-myrow" : "myrow"} ${
+                      item.style
+                    }`}
                     onClick={() => {
                       callbackSelect(item);
+                      handleStyle(item, i);
                       //setStyle(callbackClass(item));
                     }}
                   >
@@ -122,9 +152,12 @@ export default function UserTable({
               users.map((item, i) => (
                 <tr
                   key={i}
-                  className={` ${mode === true ? "dark-myrow" : "myrow"}`}
+                  className={` ${mode === true ? "dark-myrow" : "myrow"} ${
+                    item.style
+                  }`}
                   onClick={() => {
                     callbackSelect(item);
+                    handleStyle(item, i);
                     //setStyle(callbackClass(item));
                   }}
                 >

@@ -18,9 +18,18 @@ export default function App() {
       let data = await getUsers(100);
       console.log("users", data);
       //let temp = data ? (data.length > 0 ? setUsers([...data]) : "") : "";
+
       if (data && data.length > 0) {
-        setUsers([...data]);
+        let temp = data.map((item, i) => {
+          return {
+            ...item,
+            style: mode === false ? "light-unclick" : "dark-unclick"
+          };
+        });
+        console.log("temp", temp);
+        setUsers([...temp]);
       }
+
       //console.log(users);
     }
     data();
@@ -82,9 +91,25 @@ export default function App() {
     if (style === "unclicked") {
       setStyle("clicked");
       setMode(true);
+      let temp = users.map((item, i) => {
+        return {
+          ...item,
+          style: "dark-unclick"
+        };
+      });
+      console.log("temp", temp);
+      setUsers([...temp]);
     } else {
       setStyle("unclicked");
       setMode(false);
+      let temp = users.map((item, i) => {
+        return {
+          ...item,
+          style: "light-unclick"
+        };
+      });
+      console.log("temp", temp);
+      setUsers([...temp]);
     }
   }
   let headers = [

@@ -38,12 +38,19 @@
   background-color: rgb(189, 189, 189);
 }
 
-.click {
+.light-click {
   background-color: aquamarine;
 }
-.unclick {
+.dark-click {
+  background-color: rgb(88, 90, 89);
+}
+.light-unclick {
   background-color: white;
 }
+.dark-unclick {
+  background-color: rgb(0, 0, 0);
+}
+
 th {
   padding: 15px;
 }
