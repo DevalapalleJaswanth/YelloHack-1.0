@@ -1,5 +1,6 @@
 import "./styles.css";
-import "bootstrap/scss/bootstrap.scss";
+// import "bootstrap/scss/bootstrap.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import React, { useState, useEffect } from "react";
 import { getDate, getUsers } from "./Services";
@@ -35,7 +36,7 @@ export default function App() {
     data();
   }, []);
   function handleSearch(value) {
-    console.log(value);
+    //console.log(value);
     let temp = [];
     let x =
       users.length > 0
