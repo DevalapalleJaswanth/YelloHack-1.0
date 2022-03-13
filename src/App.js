@@ -3,13 +3,16 @@ import "bootstrap/scss/bootstrap.scss";
 
 import React, { useState, useEffect } from "react";
 import { getDate, getUsers } from "./Services";
-import { UserCard } from "../src/Components";
+import { UserTable } from "../src/Containers";
 import { CSVLink } from "react-csv";
 
 export default function App() {
   const [users, setUsers] = useState([]);
   const [csvData, setCsvData] = useState([]);
   const [search, setSearch] = useState([]);
+  const [style, setStyle] = useState("unclicked");
+  const [mode, setMode] = useState(false);
+  //const [preprocessed, setPreprocessed] = useState([]);
   useEffect(() => {
     async function data() {
       let data = await getUsers(100);
@@ -22,8 +25,25 @@ export default function App() {
     }
     data();
   }, []);
-  function handleSearch(e) {
-    console.log(e.target.value);
+  function handleSearch(value) {
+    console.log(value);
+    let temp = [];
+    let x =
+      users.length > 0
+        ? users.forEach((item, i) => {
+            if (
+              value === item.gender ||
+              value === item.email ||
+              value === item.name.first.toLowerCase() ||
+              value === item.name.last.toLowerCase()
+            ) {
+              console.log(item);
+              temp.push(item);
+            }
+          })
+        : "";
+    //console.log(temp);
+    setSearch([...temp]);
   }
   function handleSelect(item) {
     if (csvData.length === 0) {
@@ -58,6 +78,15 @@ export default function App() {
       }
     }
   }
+  function gettrClass(value) {
+    if (style === "unclicked") {
+      setStyle("clicked");
+      setMode(true);
+    } else {
+      setStyle("unclicked");
+      setMode(false);
+    }
+  }
   let headers = [
     { label: "Name", key: "name" },
     { label: "Gender", key: "gender" },
@@ -65,8 +94,17 @@ export default function App() {
     { label: "Email", key: "email" }
   ];
   return (
-    <div className="App ">
-      {console.log(users, csvData)}
+    <div className={`App ${mode === true ? "dark-app" : ""}  `}>
+      {console.log(
+        users,
+        csvData,
+        "search",
+        search,
+        "style",
+        style,
+        "mode",
+        mode
+      )}
       <div className="center">
         <div className="display-flex ">
           <div class="input-group mb-3 ">
@@ -88,7 +126,7 @@ export default function App() {
               placeholder="Search"
               aria-label="Search"
               aria-describedby="basic-addon1"
-              onChange={(e) => handleSearch(e)}
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
           <div>
@@ -101,10 +139,34 @@ export default function App() {
               Export as .csv
             </CSVLink>
           </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type="checkbox"
+              id="toggle"
+              onClick={(e) => gettrClass(e.target.value)}
+              unchecked
+            />
+            <label for="toggle">Darkmode</label>
+          </div>
         </div>
       </div>
-      <div className="center">
-        <table>
+      {search.length > 0 ? (
+        <UserTable
+          users={search}
+          callbackSelect={handleSelect}
+          callbackClass={gettrClass}
+          mode={mode}
+        />
+      ) : (
+        <UserTable
+          users={users}
+          callbackSelect={handleSelect}
+          callbackClass={gettrClass}
+          mode={mode}
+        />
+      )}
+      {/* <div className="table-responsive">
+        <table className="table ">
           <thead>
             <tr className="header-row">
               <th>Name</th>
@@ -127,7 +189,7 @@ export default function App() {
               ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 }
